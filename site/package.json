@@ -1,0 +1,14 @@
+{
+  "name": "kajak-kalender",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "build": "sh -c \"mkdir -p dist/about && find about -name '*.md' -exec sh -c './node_modules/.bin/markdown-it-cli {} -o dist/about/$(basename {} .md).html' \\; && cp index.html dist/."
+  },
+  "author": "brj",
+  "license": "ISC",
+  "description": "Generate calendar links for AKKK calendar",
+  "devDependencies": {
+    "markdown-it-cli": "^1.0.0"
+  }
+}
