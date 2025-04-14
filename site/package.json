@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "build": "sh -c \"mkdir -p dist/about && cp index.html dist/. && find about -name '*.md' -exec sh -c './node_modules/.bin/markdown-it-cli {} -o dist/about/$(basename {} .md).html' \\;"
+    "build": "sh -c \"chmod +x build.sh && ./build.sh\""
   },
   "author": "brj",
   "license": "ISC",
