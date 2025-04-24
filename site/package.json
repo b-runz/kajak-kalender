@@ -1,14 +1,17 @@
 {
-  "name": "kajak-kalender",
+  "name": "",
+  "type": "module",
   "version": "0.0.1",
-  "main": "index.js",
   "scripts": {
-    "build": "sh -c \"chmod +x build.sh && ./build.sh\""
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "author": "brj",
-  "license": "ISC",
-  "description": "Generate calendar links for AKKK calendar",
-  "devDependencies": {
-    "markdown-it-cli": "^1.0.0"
+  "dependencies": {
+    "@astrojs/starlight": "^0.34.0",
+    "astro": "^5.6.1",
+    "sharp": "^0.32.5"
   }
 }
