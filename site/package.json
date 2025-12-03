@@ -1,7 +1,10 @@
 {
   "name": "",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.1",  
+  "engines": {
+    "node": ">22.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
