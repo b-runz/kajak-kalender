@@ -1,0 +1,106 @@
+---
+// Astro component for showing the test cookie value
+---
+
+<div class="input-container">
+  <input type="text" id="test-cookie-input" value="" readonly />
+  <button type="button" id="copy-button" class="copy-btn" title="Copy to clipboard">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>
+  </button>
+</div>
+
+<style>
+  .input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+  }
+  
+  #test-cookie-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .copy-btn {
+    padding: 8px 12px;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+  }
+  
+  .copy-btn:hover {
+    background-color: #005a9e;
+  }
+  
+  .copy-btn:active {
+    background-color: #004578;
+  }
+  
+  .copy-btn.copied {
+    background-color: #28a745;
+  }
+</style>
+
+<script>
+  // Function to get cookie value by name
+  function getCookie(name: string): string {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
+    return '';
+  }
+  
+  // Function to copy text to clipboard
+  async function copyToClipboard(text: string): Promise<void> {
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
+  
+  // Set the value of the input box to the 'test' cookie value and setup copy button
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('test-cookie-input') as HTMLInputElement;
+    const copyButton = document.getElementById('copy-button') as HTMLButtonElement;
+    
+    if (input) {
+      input.value = "https://" + window.location.host + "/api/GetCalendarData/" + getCookie('rowId') + "/" + getCookie("encryptedKey") + "/" + getCookie("hash");
+    }
+    
+    if (copyButton && input) {
+      copyButton.addEventListener('click', async function() {
+        await copyToClipboard(input.value);
+        
+        // Visual feedback
+        const originalHTML = copyButton.innerHTML;
+        copyButton.innerHTML = '✓';
+        copyButton.classList.add('copied');
+        
+        setTimeout(() => {
+          copyButton.innerHTML = originalHTML;
+          copyButton.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  });
+</script>

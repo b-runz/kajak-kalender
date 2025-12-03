@@ -36,7 +36,7 @@ export async function GetCalendarLink(request: HttpRequest, context: InvocationC
         },
         cookies: [
             {
-                name: 'encyptedKey',
+                name: 'encryptedKey',
                 value: links.encryptionKey,
                 path: '/'
             },
