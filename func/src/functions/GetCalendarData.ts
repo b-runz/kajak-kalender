@@ -106,8 +106,8 @@ export async function GetCalendarData(request: HttpRequest, context: InvocationC
 
             return {
                 activityName: item.activityName,
-                fromTime: moment.utc(item.fromTime),
-                toTime: moment.utc(item.toTime),
+                fromTime: moment(item.fromTime),
+                toTime: moment(item.toTime),
                 isOnWaitinglist: item.isOnWaitingList,
                 description,
                 locationName
