@@ -106,8 +106,8 @@ export async function GetCalendarData(request: HttpRequest, context: InvocationC
 
             return {
                 activityName: item.activityName,
-                fromTime: moment(item.fromTime),
-                toTime: moment(item.toTime),
+                fromTime: moment.utc(item.fromTime),
+                toTime: moment.utc(item.toTime),
                 isOnWaitinglist: item.isOnWaitingList,
                 description,
                 locationName
@@ -119,7 +119,7 @@ export async function GetCalendarData(request: HttpRequest, context: InvocationC
     const calendar = ical({
         name: 'Aarhus Kano & Kajak Kalender',
         description: 'Kalender for dine tilmeldte aktiviteter',
-        timezone: 'Europe/Copenhagen',
+        timezone: 'UTC',
         url: 'https://www.aarhuskanokajak.dk'
     });
 
