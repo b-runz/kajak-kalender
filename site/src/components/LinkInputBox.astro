@@ -2,11 +2,22 @@
 // Astro component for showing the test cookie value
 ---
 
-<div class="input-container">
-  <input type="text" id="test-cookie-input" value="" readonly />
-  <button type="button" id="copy-button" class="copy-btn" title="Copy to clipboard">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>
-  </button>
+<div id="link-container">  
+  <div id="input-section" style="display: none;">
+    <div class="description-text">
+      Herunder vises link til brug i din kalender app. Kopier linket, og indsæt som beskrevet i guides
+    </div>
+    <div id="input-container" class="input-container">
+      <input type="text" id="test-cookie-input" value="" readonly />
+      <button type="button" id="copy-button" class="copy-btn" title="Copy to clipboard">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>
+      </button>
+    </div>
+  </div>
+  
+  <div id="no-cookies-message" class="no-cookies-message" style="display: none;">
+    <p>Gå til loginside for at lave link</p>
+  </div>
 </div>
 
 <style>
@@ -48,6 +59,21 @@
   .copy-btn.copied {
     background-color: #28a745;
   }
+  
+  .no-cookies-message {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 16px;
+  }
+  
+  .no-cookies-message p {
+    margin: 0;
+  }
+  
+  .description-text {
+    margin-bottom: 24px;
+  }
 </style>
 
 <script>
@@ -78,13 +104,31 @@
     }
   }
   
-  // Set the value of the input box to the 'test' cookie value and setup copy button
+  // Check if required cookies exist and show appropriate content
   document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('test-cookie-input') as HTMLInputElement;
     const copyButton = document.getElementById('copy-button') as HTMLButtonElement;
+    const inputSection = document.getElementById('input-section');
+    const noCookiesMessage = document.getElementById('no-cookies-message');
     
-    if (input) {
-      input.value = "https://" + window.location.host + "/api/GetCalendarData/" + getCookie('rowId') + "/" + getCookie("encryptedKey") + "/" + getCookie("hash");
+    // Check if all required cookies exist
+    const rowId = getCookie('rowId');
+    const encryptedKey = getCookie('encryptedKey');
+    const hash = getCookie('hash');
+    
+    const hasCookies = rowId && encryptedKey && hash;
+    
+    if (hasCookies && input && inputSection && noCookiesMessage) {
+      // Show input section and hide message
+      inputSection.style.display = 'block';
+      noCookiesMessage.style.display = 'none';
+      
+      // Set the value of the input box to the calendar link
+      input.value = "https://" + window.location.host + "/api/GetCalendarData/" + rowId + "/" + encryptedKey + "/" + hash;
+    } else if (inputSection && noCookiesMessage) {
+      // Hide input section and show message
+      inputSection.style.display = 'none';
+      noCookiesMessage.style.display = 'block';
     }
     
     if (copyButton && input) {
